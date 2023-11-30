@@ -77,7 +77,7 @@ def write_file():
         print(f"No scientist found with ID {scientist_id}")
         return
 
-    with open("scientists.csv", "w", newline="") as write_file:
+    with open("scientists_temp.csv", "w", newline="") as write_file:
         writer = csv.DictWriter(write_file, fieldnames)
 
         if not rows or rows[0]["scientist ID"] != fieldnames[0]:
@@ -85,14 +85,10 @@ def write_file():
 
         writer.writerows(rows)
 
-        # Add the new data
-        writer.writerow({
-            "scientist ID": scientist_id,
-            "name": "",  # You might want to add a prompt for the name
-            "job description": job_description,
-            "years worked": years_worked,
-            "clearance": "",  # You might want to add a prompt for clearance
-        })
+    # Rename the temp file to the original file after updating the rows
+    import os
+    os.remove("scientists.csv")
+    os.rename("scientists_temp.csv", "scientists.csv")
 
     print(f"Scientist with ID {scientist_id} updated successfully.")
 
